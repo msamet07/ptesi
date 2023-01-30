@@ -64,9 +64,16 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
+function takimSkoru( ){
+ let skor = Math.random();                   //0<= skor<1  
+ let genisSkor=skor * 16;                   // 0<= genisSkor < 16
+ let tamSayiSkor = Math.floor(genisSkor);  // tamSayiSkor = 0 ,1 ,2 ...... 15
+ let macSkoru = tamSayiSkor  + 10 ;        // Mac skoru = 10 ,11 ,12 ....25
+// let macSkoru2= Math.floor(Math.random() * 16 + 10 );  //tek satırda yazmak için 
+// return macSkoru2
+return macSkoru  
 }
+takimSkoru();
 
 
 
@@ -86,11 +93,18 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */ 
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(callBack, ceyrekSayisi){
+let evSahibiSkoru=0;
+let konukTakimSkoru=0;
+for(let i; i<=ceyrekSayisi ; i++){
+  evSahibiSkoru=evSahibiSkoru+callback ();
+  konukTakimSkoru=callback();
+}
+return{"EvSahibi" : evSahibiSkoru, "KonukTakim": konukTakimSkoru}
+  
 }
 
-
+console.log (macSonucu(takimSkoru,4));
 
 
 
@@ -109,10 +123,15 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function periyotSkoru(callback) {
+  let skor = {
 
+    "EvSahibi": callback(),
+    "KonukTakim": callback()}
+    return skor ;
 }
+console.log(periyotSkoru(takimSkoru));
+
 
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
@@ -146,9 +165,29 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(cb_periyotSkoru, cb_takimSkoru, ceyrekSayisi) {
+  let macDetaylari = [];
+  let macEvSahibi = 0;
+  let macKonukTakimi = 0;
+  for(let i= 1; i<=ceyrekSayisi; i++){
+    let periyotSkoru = cb_periyotSkoru(cb_takimSkoru);
+    macEvSahibi += periyotSkoru.EvSahibi;
+    macKonukTakimi += periyotSkoru.KonukTakim;
+    macDetaylari.push (`${i}. Periyot : Ev Sahibi ${periyotSkoru.EvSahibi } - Konuk Takım ${periyotSkoru.KonukTakim}`);
+
+  }
+  let i=1
+  while (macEvSahibi == macKonukTakimi){
+    let periyotSkoru= cb_periyotSkoru(cb_periyotSkoru);
+    macEvSahibi+=periyotSkoru.EvSahibi;
+    macKonukTakimi+=periyotSkoru.KonukTakim;
+    macDetaylari.push(`${i}. Uzatma : Ev Sahibi ${periyotSkoru.EvSahibi} - Konuk Takım ${periyotSkoru.KonukTakim}`);
+    i++;
+  }
+  macDetaylari.push (`Maç Sonucu: Ev Sahibi ${macEvSahibi} - Konuk Takım ${macKonukTakimi}`);
+  return macDetaylari;
 }
+console.log (skorTabelasi(periyotSkoru, takimSkoru, 4));
 
 
 
